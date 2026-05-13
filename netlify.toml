@@ -1,2 +1,6 @@
+[build]
+  base = "frontend"
+  publish = "dist"
+
 [functions]
-  directory = "frontend/netlify/functions"
+  directory = "netlify/functions"
