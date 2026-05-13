@@ -7,13 +7,19 @@ export default function ContactForm() {
     mensaje: ''
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await fetch('/.netlify/functions/send-email', {
+
+    const response = await fetch('/.netlify/functions/send-email', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(data)
     });
+
+    if (!response.ok) {
+      throw new Error('Error en la petición');
+    }
+
     
     setData({
       nombre: '',
