@@ -1,0 +1,50 @@
+/*Reset de las propiedades del navegador*/
+.header {
+  display: flex;
+  flex-direction: column; /* Apila logo, título y slogan */
+  align-items:start;    /* Centra horizontalmente */
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.empresa{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.brand {
+  display: flex;
+  flex-direction:row; 
+  align-items: center;
+  margin-bottom: 3px;
+  width: 100%;
+}
+
+.logo {
+  width: 120px; 
+  margin-bottom: 5px;
+}
+
+
+.navbar {
+  width: 100%;               
+  display: flex;
+  justify-content: flex-end;  
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+
+.navbar ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+
