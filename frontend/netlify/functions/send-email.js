@@ -1,30 +1,26 @@
-import express from 'express';
-import nodemailer from 'nodemailer';
-import cors from 'cors';
+const nodemailer = require("nodemailer");
 
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.post('/contacto', async (req, res) => {
-  const { nombre, email, mensaje } = req.body;
-
+exports.handler = async (event) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
+    // Los datos llegan en el body del request
+    const { nombre, email, mensaje } = JSON.parse(event.body);
+
+    // Configura el transporte de correo
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
       auth: {
-        user: 'gerardo07927@gmail.com',
-        pass: 'psek qrmr csva pnbu'
+        user: process.env.EMAIL_USER,   // usa variables de entorno en Netlify
+        pass: process.env.EMAIL_PASS    // nunca pongas la contraseña directa
       }
     });
 
+    // Contenido del correo
     await transporter.sendMail({
-      from: '"Formulario_web" <gerardo07927@gmail.com>',
-      to: 'gerardo07927@gmail.com',
+      from: `"Formulario_web" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER, // destinatario
       subject: `Nuevo mensaje de ${nombre}`,
       html: `
-        <h3>Nuevo mensaje desde la web</h3>
+        <h3>Nuevo mensaje desde la web estática</h3>
         <p><strong>Nombre:</strong> ${nombre}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Mensaje:</strong></p>
@@ -32,13 +28,15 @@ app.post('/contacto', async (req, res) => {
       `
     });
 
-    res.status(200).json({ message: 'Correo enviado' });
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Correo enviado" })
+    };
 
   } catch (error) {
-    res.status(500).json({ error: 'Error al enviar el correo' });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Error al enviar el correo", detalle: error.message })
+    };
   }
-});
-
-app.listen(3001, () => {
-  console.log('✅ Backend corriendo en http://localhost:3001');
-});
+};
